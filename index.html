@@ -155,8 +155,8 @@ function hentVegreferanser(hvaslags) {
     var vegstatus = null; 
     var vegnr = null; 
     var hp = null;
-    var meter = null; 
-    var dato = null; 
+    var meter = null;     
+    var dato =  dagensdato(); 
     
     var oppdaterUrlParams = false; 
     if (hvaslags == 'knappeklikk') {
@@ -251,8 +251,7 @@ function hentVegreferanser(hvaslags) {
                                             "vegstatus"    : vegstatus, 
                                             "vegnr"        : vegnr, 
                                             "hp"           : hp,     
-                                            "meter"        : meter,    
-                                            "dato"         : dato }); 
+                                            "meter"        : meter }); 
                 } else { 
                 // endrer valgene i menyen "Velg vegreferanse"
                     $('#fylke').val(fylke); 
@@ -618,16 +617,9 @@ sentrerKart : boolean. Sentrerer kartet i angitt posisjon.
 
 */
 
-    var mindato = "";
-    if (sjekkdato(valgtDato)) {
-        mindato = valgtDato; 
-    
-    } else {
 
-        // mindato =  document.getElementById("dato").value;
-        mindato =  dagensdato(); 
-        
-    }
+    mindato =  dagensdato(); 
+    
    if (sjekkdato(mindato)) {
 
        historikkApi = 'https://python.ltglahn.no/posisjon?ost='+ost +
@@ -676,13 +668,9 @@ sentrerKart : boolean. Sentrerer kartet i angitt posisjon.
                 // Oppdaterer nettleser adressefelt og historikk? 
                 if (oppdaterUrl === true) {
                 
-                    if (sjekkdato(mindato)) { 
-                        endreUrlParametre( { 'kartvisning' : 'posisjon', 
-                                            'ost' : coords[0], 'nord' : coords[1], 'dato' : mindato }); 
-                    } else {
                         endreUrlParametre( { 'kartvisning' : 'posisjon', 
                                             'ost' : coords[0], 'nord' : coords[1] }); 
-                    }
+                    
                 } else { 
                     // Sjekker om vi har fornuftige URL-parametre for vegreferanseverdier. 
                     // I så fall endrer vi valgene i "velg vegreferanseverdi" 
