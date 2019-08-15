@@ -270,7 +270,8 @@ function hentVegreferanser(hvaslags) {
                 var tempGeo = []; 
 
                 // for (index = 0; index < respons['features'].length; ++index) {
-                for (index = 0; index < 1 ; ++index) {
+                // for (index = 0; index < 1 ; ++index) 
+                var index = 0; 
                     var coords = JSON.parse( JSON.stringify( respons['features'][index]['geometry']['coordinates'] ));
                     var props  = JSON.parse( JSON.stringify( respons['features'][index]['properties'] )) ;
                     var mittNummer = index + 1; 
@@ -283,7 +284,7 @@ function hentVegreferanser(hvaslags) {
                     // Lag table header 
                     if ($("#vegreferanseTabell tbody").length == 0) {
                       $("#vegreferanseTabell").append("<thead>" + 
-                      "<tr><th><em>Nummer</em></th>" + 
+//                      "<tr><th><em>Nummer</em></th>" + 
                           "<th><em>Gyldig fra</em></th>" + 
                           "<th><em>Gyldig til</em></th>"  + 
                           "<th><em>X</em></th>"  + 
@@ -292,80 +293,38 @@ function hentVegreferanser(hvaslags) {
                     }
 
 
-//  Funker bedre å konsekvent bruke den brukervalgte datoen.                   
-//                    var tekstX = laglenke_punktsok( coords[0], coords[1], x, props['fradato']) 
-//                    var tekstY = laglenke_punktsok( coords[0], coords[1], y, props['fradato']) 
 
                     var tekstX = laglenke_punktsok( coords[0], coords[1], x, dato ) 
                     var tekstY = laglenke_punktsok( coords[0], coords[1], y, dato ) 
                     
                     // Append product to the table
                     var myTableRow = "<tr " + 'class="'  + props['fremhev'] +  '">' +
-                        "<td>" + props['visningsnummer'] + "</td>" +
+  //                      "<td>" + props['visningsnummer'] + "</td>" +
                         "<td>" + props['fradato'] + "</td>" +
                         "<td>" + props['tildato'] + "</td>" +
-                        "<td>" + tekstX + "</td>" +
-                        "<td>" + tekstY + "</td>" +
+                        "<td>" + x + "</td>" +
+                        "<td>" + y + "</td>" +
+//                        "<td>" + tekstX + "</td>" +
+//                        "<td>" + tekstY + "</td>" +
                         
                       "</tr>"; 
                     $("#vegreferanseTabell tbody").append(myTableRow);
 
-                    // Unngår å modifisere det elementet vi itererer over. I stedet kopierer vi 
-                    // over til tempGeo, med eller uten endringer 
-                    // bruker JSON.parse(JSON.stringify( object)) for å få "deepCopy" 
-                    var match = false; 
-                    
-                    tempGeo = []
-                    for (jj = 0; jj < myGeo.length; ++jj) {
-                        var tempResultat = JSON.parse( JSON.stringify( myGeo[jj])); 
-                        var dx = coords[0] - tempResultat['coords'][0]; 
-                        var dy = coords[1] - tempResultat['coords'][1]; 
-                        if (Math.abs(dx) < posisjonToleranseX && Math.abs(dy) < posisjonToleranseY) { 
-                                
-                            match = true; 
-                            tempResultat['props']['visningsnummer'] = tempResultat['props']['visningsnummer'].concat( ', ' +  mittNummer.toString()); 
-                            if (props['fremhev'].includes( 'fremhev' )) {
-                                tempResultat['props']['fremhev'] = JSON.parse( JSON.stringify( props['fremhev'] ) ); 
-                            }
-                               
-                        } 
-                        tempGeo.push( tempResultat ); 
-                    
-                    }
-                    // Ingen match mot gamle elementer? Føyer nye elementer til tempGeo - array 
-                    if (!match) { 
-                        tempGeo.push( { 'coords' : coords, 'props' : props } );
-                    }
-                    myGeo = JSON.parse( JSON.stringify( tempGeo)); 
-                    
-                }
+
+          
                 if (map.hasLayer(myMarkers)){ map.removeLayer(myMarkers) }
                 if (map.hasLayer(myCircles)){ map.removeLayer(myCircles) }
                 
                 
-                for (var ii = 0; ii < myGeo.length; ii++) {
+                // for (var ii = 0; ii < myGeo.length; ii++) {
+                var ii = 0; 
                 
-                    var mittPunkt =  crs.projection.unproject( L.point( myGeo[ii]['coords'][0], myGeo[ii]['coords'][1] ));
+                    var mittPunkt =  crs.projection.unproject( L.point( coords[0], coords[1] ));
                     var minMarker = new L.Marker( mittPunkt)
                     
-                    if ( myGeo[ii]['props']['fremhev'].includes( 'fremhev' ) ) {
-                        minMarker.bindTooltip( '<h3><font color="red">' + 
-                                                myGeo[ii]['props']['visningsnummer']  + '</font></h3>', 
-                                                { 'permanent' : true, 'direction' : 'right' } ); 
-                        
-                        <!-- var minSirkel = new L.circle( mittPunkt, { color : '#C02900',  -->
-                                <!-- fillColor: '#D19D1F', weigth : 15, fillOpacity:0, radius: 30 } ).addTo(myCircles);  -->
-                        
-                    } else if (myGeo[ii]['props']['fremhev'].includes( 'idag' )) {
-                        minMarker.bindTooltip( '<h3>' + myGeo[ii]['props']['visningsnummer'] + 
-                                                '</h3>', { 'permanent' : true, 'direction' : 'right' } ); 
-                    } else {
-                        minMarker.bindTooltip( myGeo[ii]['props']['visningsnummer'], 
-                                                { 'permanent' : true, 'direction' : 'right' } ); 
-
-                    }
+                    
                     minMarker.addTo( myMarkers ); 
-                }
+                // }
                 
                 
                 
@@ -379,39 +338,6 @@ function hentVegreferanser(hvaslags) {
      }
 }
 
-/* Datovelger */
-/*
-$(function(){
-
-    myUrl = window.location.href; 
-    var dato = getUrlParameter(myUrl, "dato");
-    var godkjent = sjekkdato( dato); 
-    if (!godkjent) { 
-
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        dato = yyyy + '-' + mm + '-' + dd; 
-
-    }
-
-    $('#dato').dropdownDatepicker({ 'defaultDate' : dato, 
-                                    maxYear: 2021, 
-                                    minYear: 1950, 
-                                    dayLabel: 'Dag',
-                                    monthLabel: 'Måned',
-                                    yearLabel: 'År',
-                                    monthLongValues: ['Januar', 'Februar', 'Mars', 
-                                        'April', 'Mai', 'Juni', 'Juli', 'August', 
-                                        'September', 'Oktober', 'November', 'Desember'],
-                                    monthShortValues: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 
-                                            'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
-//                                    initialDayMonthYearValues: ['Day', 'Month', 'Year'],
-                                    daySuffixValues: ['ste', 'de', 'dje', 'de']
-                                    } ); 
-});
-*/
 
 function dagensdato() {
 
@@ -626,7 +552,8 @@ function lagPunktHistorikkTabell( jsondata, mindato) {
     $("#bruksanvisning1").empty();
     var coordstring = ''; 
     var arrayLength = jsondata['features'].length;
-    for (var i = 0; i < arrayLength; i++) {
+//    for (var i = 0; i < arrayLength; i++) {
+    var i = 0; 
 
         if ($("#vegreferanseTabell tbody").length == 0) {
           $("#vegreferanseTabell").append("<thead>" + 
@@ -645,7 +572,7 @@ function lagPunktHistorikkTabell( jsondata, mindato) {
             "<td>" + jsondata['features'][i]['properties']['tildato'] + "</td>" +
           "</tr>"; 
         $("#vegreferanseTabell tbody").append(myTableRow);
-    }
+//    }
     $("#bruksanvisning1").append('<h2>Vegreferanseverdier i punkt ' + coordstring + '</h2>');
 }    
 
@@ -803,6 +730,7 @@ function laglenke_punktsok( X, Y, tekst, dato) {
 // I tillegg legger vi på URL parametre for vegreferanse-søk. 
 
 
+
     var myUrl = window.location.href;
     var myPath = myUrl.split('?')[0]
 
@@ -838,3 +766,4 @@ L.control.scale({ imperial : false }  ).addTo(map);
 </script>
 </body>
 </html>
+

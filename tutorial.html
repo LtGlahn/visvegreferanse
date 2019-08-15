@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
- <title>Vis vegreferanser</title>
+ <title>Bruksanvisning</title>
 
  <script src="lib/jquery-3.4.1.min.js"></script>
  <script src="lib/jquery-dropdown-datepicker.min.js"></script>
@@ -31,7 +31,7 @@ vise hvordan vegreferansene har endret seg i tid og rom. Kartet er fremdeles noe
 <p>Datovelgeren angir hvilken dato som skal <span class="fremhev">fremheves</span> spesielt, i kart og tabell.
 
 -->
-<h1>Velg en vegreferanse</h1>
+<h1>Bruksanvisning - velg en vegreferanse</h1>
 <a name="vegrefverdi"></a>
 
 
@@ -98,14 +98,17 @@ Vegstatus:
   <input id="meter" type="number" name="quantity" min="0" max="99999" value="0">
 </p>
 
-<p>Med disse valgene angir du den vegreferansen som er interessant for deg, og får vist den i kartet.</p>
+<p>Med disse valgene angir du den vegreferansen som er interessant for deg. Bruk knappen <em>"Hent denne vegreferansen</em>, så får du vist i kart og tabell hvor denne vegreferansen er hen på vegnettet.</p>
+
+<p>
+    <button class="myButton" onClick="hentVegreferanser('knappeklikk')" >Hent denne vegreferansen</button>
+</p> 
 
 <img src="img/eks0800ev18h1m0.png" alt="Tidsutvikling for vegreferansen 0800 Ev 18 hp1 m0" >
 
 <table>
 <thead>
 <tr>
-    <th><em>Nummer</em></th>
     <th><em>Gyldig fra</em></th>
     <th><em>Gyldig til</em></th>
     <th><em>X</em></th>
@@ -115,11 +118,14 @@ Vegstatus:
 <tbody>
 
     <tr class="fremhevidag">
-      <td>1</td>
       <td>2012-06-06</td>
       <td>9999-12-31</td>
+      <td>205102.57</td>
+      <td>6560292.99</td>
+<!--
       <td><a href="./?kartvisning=posisjon&ost=205102.569152832&nord=6560292.99194336&dato=2012-06-06">205102.57</a></td>
       <td><a href="./?kartvisning=posisjon&ost=205102.569152832&nord=6560292.99194336&dato=2012-06-06">6560292.99</a></td>
+-->
     </tr>
 <!--
     <tr class="gammalt">
@@ -139,11 +145,9 @@ Vegstatus:
 <a href="https://www.vegvesen.no/Europaveg/e18skylangangen" target="blank">E18 motorvegen 
 Sky-Langangen åpnet i 2012</a>. Den gamle E18-traséen, markert med tallet 2 i kart og tabell, 
 er i dag blitt til Fv 2962.</p>
--->
 
 <p>Koordinatene er klikkbare! Når du klikker på en koordinat får du tidsutvikling av vegreferanse i dette punktet, slik som beskrevet i avsnittet <a href="#kartklikk">Vis punktverdier</a>.
 
-<!--
 <h3 id="komprimeringh3">Punkt nær hverandre slås sammen</h3>
 
 <p>Kartløsningen slår sammen punkt som ligger veldig nærme hverandre. 
@@ -190,7 +194,7 @@ Avstanden mellom punktene er ca 3.5 meter, for lite til at det blir lesbart om v
 <h1>Vis punktverdier - Klikk i kartet</h1>
 
 
-<p>Ved å klikke på en veg i kartet kan du se hvordan vegreferansen har endret seg i dette punktet.</p>
+<p>Ved å klikke på en veg i kartet kan du se vegreferansen i dette punktet.</p>
 
 <p>
 <img src="img/eks0800fv2962h2m0.png" alt="Tidsutvikling av vegreferanse for et punkt i vegnettet" >
@@ -203,7 +207,9 @@ Avstanden mellom punktene er ca 3.5 meter, for lite til at det blir lesbart om v
     <th><em>Vegreferanse</em></th>
     <th><em>Gyldig fra</em></th>
     <th><em>Gyldig til</em></th>
+    <!--
     <th><em><span class="kommentar">Kommentar</span></em></th>
+    -->
 </tr>
 </thead>
 <tbody>
@@ -212,16 +218,18 @@ Avstanden mellom punktene er ca 3.5 meter, for lite til at det blir lesbart om v
       <td>0800 Fv2962 hp2 m0</td>
       <td>2019-05-08</td>
       <td>9999-12-31</td>
+      <!--
       <td ><span class="kommentar">Dagens verdi</span></td>
+      -->
     </tr>
-    
+<!--    
     <tr class="gammalt">
       <td>0800 Fv30 hp1 m0</td>
       <td>2013-10-28</td>
       <td>2019-05-08</td>
       <td ><span class="kommentar"></span></td>
     </tr>
-
+-->
  <!--    
     <tr class="gammalt">
       <td>0800 Fv30 hp1 m0</td>
@@ -237,6 +245,7 @@ Avstanden mellom punktene er ca 3.5 meter, for lite til at det blir lesbart om v
       <td ><span class="kommentar"></span></td>
     </tr>
 -->
+<!--
 
     <tr class="gammalt">
       <td>0800 Et18 hp1 m0</td>
@@ -244,40 +253,41 @@ Avstanden mellom punktene er ca 3.5 meter, for lite til at det blir lesbart om v
       <td>2013-10-28</td>
       <td ><span class="kommentar">Midlertidig vegstatus</span></td>
     </tr>
-
     <tr class="gammalt">
       <td>0800 Ev18 hp1 m0</td>
       <td>1950-01-01</td>
       <td>2012-06-06</td>
       <td ><span class="kommentar">Gammel E18 trasé</span></td>
     </tr>
+-->
 
 </tbody>
 </table>
 </p>
 
-<p>Av tabellen ser vi at dagens Fv2962 het Fv30 før 8. mai 2019. <!-- Videre har vi to 
+<!--
+<p>Av tabellen ser vi at dagens Fv2962 het Fv30 før 8. mai 2019. Videre har vi to 
 oppføringer for <em>Fv30 hp1 m0</em>. Det skjer en del vegnettsendringer 
 som påvirker historikken uten at akkurat verdiene for hp, meter etc endres, så slike 
-dobbeltoppføringer er ganske vanlig.--></p> 
+dobbeltoppføringer er ganske vanlig.</p> 
 
 <p>Fram til 2012-06-06 het vegen Ev18, men det tok over ett 
 år (fram til 2013-10-28) før vegen fikk fylkesveg-nummeret Fv30. I mellomtiden het vegen <em>Et18</em>, 
 hvor bokstaven "t" betyr <em>midlertidig status bilveg</em>. Dette er vanlig praksis når 
 det drøyer ut i tid med tildeling av nye vegnummer.</p>
 </p>
+-->
 
 <a name="minpos"></a>
 <h1>Vegreferanse i min posisjon</h1>
 
+<p>For den som er ute på vegen er det kanskje greit å se hvilke vegreferanseverdier 
+som har vært i din posisjon? Knappen for dette ligger helt nederst på siden. Ellers 
+er visningen lik den du får når du klikker i kartflaten.</p>
 
 <p>
 <button class="myButton" >Hent vegreferanse i min posisjon</button>
 </p>
-
-<p>For den som er ute på vegen er det kanskje greit å se hvilke vegreferanseverdier 
-som har vært i din posisjon? Knappen for dette ligger helt nederst på siden. Ellers 
-er visningen lik den du får når du klikker i kartflaten.</p>
 
 <h1>Mer om vegreferanser</h1>
 <a name="vegrefteori"></a>
@@ -320,50 +330,7 @@ Det er mange grunner til å at vegreferanser endres i vegens levetid:
   <li>Teknisk vedlikehold, f.eks. opprydding i hp-inndeling.</li>
 </ul>
 -->
-<script>
-/* Datovelger */
-$(function(){
 
-   
-
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    dato = yyyy + '-' + mm + '-' + dd; 
-
-   
-    $('#dato').dropdownDatepicker({ 'defaultDate' : dato, maxYear: 2021, minYear: 1950 } );
- 
-});
-
-function sjekkdato( mystring) {
-// Sjekker om dato er på format 2018-12-30 
-
-    var godkjent = false;     
-    if (mystring === undefined)  {
-        // Do nothing. Log to console? Nah... 
-    } else { 
-    
-
-        var myArr = mystring.split( '-'); 
-        if (myArr.length == 3) {
-            var yyyy = parseInt( myArr[0] ); 
-            var mm = parseInt( myArr[1] ); 
-            var dd = parseInt( myArr[2] ); 
-            
-            if (!isNaN( yyyy ) && !isNaN( mm ) && !isNaN( dd)  && 
-                yyyy > 1949 && yyyy < 1e4 && mm > 0 && mm < 13 && dd > 0 && dd < 32) {
-                    godkjent = true; 
-            }
-            
-        }
-    }
-    return godkjent
-
-}
-
-</script>
 
 </body>
 </html>
